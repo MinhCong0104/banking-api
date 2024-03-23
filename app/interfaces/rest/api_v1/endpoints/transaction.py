@@ -1,5 +1,5 @@
-from fastapi import APIRouter, Body, Depends, Path, Query
-from typing import Annotated, Union, Dict
+from fastapi import APIRouter, Body, Depends, Path, Query, UploadFile, File
+from typing import Annotated, Union, Dict, List
 from app.domain.transaction.entity import Transaction, TransactionInCreate, TransactionInDB, TransactionInUpdate
 from app.shared.decorator import response_decorator
 from app.domain.shared.enum import UserRole, Type
@@ -31,9 +31,9 @@ router = APIRouter()
 @response_decorator()
 def create_transaction(
     payload: TransactionInCreate = Body(..., title="TransactionInCreate payload"),
+    # files: UploadFile = File(...),
     create_transaction_use_case: CreateTransactionUseCase = Depends(CreateTransactionUseCase),
 ):
-    print(payload)
     req_object = CreateTransactionRequestObject.builder(payload=payload)
     response = create_transaction_use_case.execute(request_object=req_object)
     return response

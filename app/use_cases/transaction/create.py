@@ -1,7 +1,6 @@
 from typing import Optional
-from fastapi import Depends
+from fastapi import Depends, File, UploadFile
 from app.shared import request_object, use_case
-import gridfs
 
 from app.domain.transaction.entity import Transaction, TransactionInCreate, TransactionInDB
 from app.infra.transaction.transaction_repository import TransactionRepository
@@ -9,17 +8,21 @@ from app.infra.transaction.transaction_repository import TransactionRepository
 class CreateTransactionRequestObject(request_object.ValidRequestObject):
     def __init__(self, transaction_in: TransactionInCreate) -> None:
         self.transaction_in = transaction_in
+        # self.file = file
 
     @classmethod
-    def builder(cls, payload: Optional[TransactionInCreate]) -> request_object.RequestObject:
+    def builder(cls, payload: Optional[TransactionInCreate] = None) -> request_object.RequestObject:
         invalid_req = request_object.InvalidRequestObject()
         if payload is None:
             invalid_req.add_error("payload", "Invalid payload")
 
+        # if file is None:
+        #     invalid_req.add_error("file", "Invalid file")
+
         if invalid_req.has_errors():
             return invalid_req
 
-        return CreateTransactionRequestObject(transaction_in=payload)
+        return CreateTransactionRequestObject(transaction_in=payload, file=file)
 
 
 class CreateTransactionUseCase(use_case.UseCase):
@@ -31,5 +34,8 @@ class CreateTransactionUseCase(use_case.UseCase):
 
         obj_in: TransactionInDB = TransactionInDB(**transaction_in.model_dump())
         transaction_in_db: TransactionInDB = self.transaction_repository.create(transaction=obj_in)
+
+        transaction_in_db.file.put(req_object.file, content_type='image/jpg')
+        transaction_in_db.save()
 
         return Transaction(**transaction_in_db.model_dump())

@@ -4,7 +4,7 @@ from mongoengine import Document, StringField, DateTimeField, ImageField
 
 class Transaction(Document):
     note = StringField(required=False)
-    file = ImageField(required=True, thumbnail_size=(150, 150, False))
+    file = ImageField(required=False, thumbnail_size=(150, 150, False))
 
     created_at = DateTimeField(required=True)
     updated_at = DateTimeField(required=False)

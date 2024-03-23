@@ -1,3 +1,4 @@
+from fastapi import UploadFile, File
 from datetime import datetime, date as Date
 from typing import Optional, List, Union, Any
 from pydantic import ConfigDict
@@ -8,7 +9,7 @@ from app.domain.shared.enum import Type
 class TransactionBase(BaseEntity):
     # date: Union[datetime, Date]
     note: Optional[str] = None
-    file: Any
+    file: UploadFile = File(...)
 
 
 class TransactionInDB(IDModelMixin, DateTimeModelMixin, TransactionBase):
@@ -18,6 +19,7 @@ class TransactionInDB(IDModelMixin, DateTimeModelMixin, TransactionBase):
 
 class TransactionInCreate(BaseEntity):
     note: Optional[str] = None
+    file: UploadFile = File(...)
     # date: str
 
 
