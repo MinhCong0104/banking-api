@@ -1,13 +1,11 @@
 import datetime
-from mongoengine import Document, StringField, DateTimeField, ImageField, FloatField, ListField
-
+from mongoengine import Document, StringField, DateTimeField, ImageField, FloatField
 
 
 class Transaction(Document):
-    date = DateTimeField(required=True)
-    location = StringField(required=False)
-    amount = FloatField(required=True)
-    player = ListField(required=True)
+    name = StringField(required=True)
+    gender = StringField(required=True)
+    credit = FloatField(required=True)
 
     created_at = DateTimeField(required=True)
     updated_at = DateTimeField(required=False)
@@ -29,8 +27,8 @@ class Transaction(Document):
         return cls(**dict(data, id=id))
 
     meta = {
-        "collection": "Transactions",
-        "indexes": ["date"],
+        "collection": "Players",
+        "indexes": ["name"],
         "allow_inheritance": True,
         "index_cls": False,
     }
