@@ -26,16 +26,14 @@ class Settings(BaseSettings):
 
     UPLOAD_DIR: str = "/uploads"
     # project config
-    PROJECT_NAME: str = "SPENDING-WEBAPP"
-    API_V1_STR: str = "/api/v1"
+    PROJECT_NAME: str = "BANKING-API"
     API_PORT: Optional[int] = 8000
 
     BACKEND_CORS_ORIGINS: List[str] = []
 
-    GOOGLE_CLIENT_ID: str
-    GOOGLE_CLIENT_SECRET: str
-    GOOGLE_REDIRECT_URI: str
-    GOOGLE_TOKEN_INFO: str
+    GG_SHEET_API_KEY: str
+    GG_SHEET_ID: str
+    GG_SHEET_URL: str
 
     @field_validator("BACKEND_CORS_ORIGINS", mode="before")
     def assemble_cors_origins(cls, v: Union[str, List[str]]) -> Union[List[str], str]:
@@ -44,12 +42,6 @@ class Settings(BaseSettings):
         elif isinstance(v, (list, str)):
             return v
         raise ValueError(v)
-
-    JOURNAL_PREFIX: str
-    JOURNAL_PAD_ZEROS: int
-
-    TRANSACTION_PREFIX: str
-    TRANSACTION_PAD_ZEROS: int
 
     ENVIRONMENT: str
     ROOT_DIR: ClassVar = Path(__file__).parent.parent.parent
