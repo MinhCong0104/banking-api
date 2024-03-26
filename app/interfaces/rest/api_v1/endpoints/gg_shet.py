@@ -8,13 +8,22 @@ from app.config import settings
 router = APIRouter()
 
 
-@router.get(
-    "",
-    # response_model=Transaction,
-)
+@router.get("")
 @response_decorator()
-def get_data(range = 'Tiền cầu sân cố định'):
-
+def get_data(
+    range='Tiền cầu sân cố định',
+    date: str = None,
+):
     url = f"{settings.GG_SHEET_URL}/{settings.GG_SHEET_ID}/values/{range}?key={settings.GG_SHEET_API_KEY}"
     response = requests.get(url)
-    return response.json()
+    for data in response.json()["values"]:
+        if data[2] == date:
+            return data
+    return {"Response": "Not found"}
+
+@router.post("")
+def write_row(
+    range='Tiền cầu sân cố định',
+    date: str = None,
+):
+    return {"Response": "OK"}
