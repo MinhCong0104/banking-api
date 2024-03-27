@@ -55,16 +55,6 @@ def batch_update_values(
     return error
 
 
-# if __name__ == "__main__":
-#   # Pass: spreadsheet_id, range_name value_input_option and _values)
-#   batch_update_values(
-#       "1CM29gwKIzeXsAppeNwrc8lbYaVMmUclprLuLYuHog4k",
-#       "A1:C2",
-#       "USER_ENTERED",
-#       [["F", "B"], ["C", "D"]],
-#   )
-
-
 @router.get("")
 @response_decorator()
 def get_data(
@@ -85,23 +75,23 @@ def write_data(
     range: str = 'Tiền cầu sân cố định',
     name: List[str] = []
 ):
-    url = f"{settings.GG_SHEET_URL}/{settings.GG_SHEET_ID}/values/{range}?key={settings.GG_SHEET_API_KEY}"
-    data = {
-        "range": f"{range}!L3:N3",
-        "majorDimension": "ROWS",
-        "values": [
-            ["TRUE"], ["FALSE"], ["TRUE"],
-        ],
-    }
-    response = requests.put(url, json=data)
-    return response.status_code
+    # url = f"{settings.GG_SHEET_URL}/{settings.GG_SHEET_ID}/values/{range}?key={settings.GG_SHEET_API_KEY}"
+    # data = {
+    #     "range": f"{range}!L3:N3",
+    #     "majorDimension": "ROWS",
+    #     "values": [
+    #         ["TRUE"], ["FALSE"], ["TRUE"],
+    #     ],
+    # }
+    # response = requests.put(url, json=data)
+    # return response.status_code
 
 
 
-    # batch_update_values(
-    #     settings.GG_SHEET_ID,
-    #     f"{range}!L3:N3",
-    #     "USER_ENTERED",
-    #     [["True"], ["FALSE"], ["True"]],
-    # )
-    # return {"Response": "OK"}
+    batch_update_values(
+        settings.GG_SHEET_ID,
+        f"{range}!A1",
+        "USER_ENTERED",
+        [["X"]],
+    )
+    return {"Response": "OK"}
