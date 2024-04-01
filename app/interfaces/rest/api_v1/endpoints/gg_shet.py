@@ -1,14 +1,11 @@
 import requests
+import os
 from fastapi import APIRouter, Body, Depends, Path, Query, UploadFile, File
 from typing import Annotated, Union, Dict, List
 from app.shared.decorator import response_decorator
 from app.config import settings
 
-from google import auth
-from googleapiclient.discovery import build
-from googleapiclient.errors import HttpError
 import gspread
-# from oauth2client.service_account import ServiceAccountCredentials
 
 
 router = APIRouter()
@@ -54,10 +51,10 @@ def get_data(
 @router.put("")
 @response_decorator()
 def write_data(
-    range: str = 'Tiền cầu sân cố định',
-    name: List[str] = []
+    spread_name: str = 'Tiền cầu sân cố định',
+    sheet_name: str = 'DashBoard'
 ):
-    gc = gspread.service_account()
-    wks = gc.open(range).get_worksheet(0)
-    wks.update([["gia tri 1", "gia tri 2"]], "E1")
+    gc = gspread.service_account("app/infra/service/annular-form-362316-44f3fc4ff288.json")
+    wks = gc.open(spread_name).worksheet(sheet_name)
+    wks.update([["Tháng", "Tổng số thành viên"]], "E1")
     return {"Response": "OK"}
