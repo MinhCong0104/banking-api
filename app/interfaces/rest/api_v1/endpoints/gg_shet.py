@@ -1,11 +1,14 @@
 import requests
 import os
+import gspread
 from fastapi import APIRouter, Body, Depends, Path, Query, UploadFile, File
 from typing import Annotated, Union, Dict, List
+
 from app.shared.decorator import response_decorator
 from app.config import settings
-
-import gspread
+from app.infra.service.google_service import gc
+from app.domain.google_sheet.entity import GoogleSheetInUpdate
+from app.use_cases.google_sheet.update import UpdateGoogleSheetRequestObject, UpdateGoogleSheetUseCase
 
 
 router = APIRouter()
@@ -51,10 +54,9 @@ def get_data(
 @router.put("")
 @response_decorator()
 def write_data(
-    spread_name: str = 'Tiền cầu sân cố định',
-    sheet_name: str = 'DashBoard'
+    payload: GoogleSheetInUpdate = Body(..., title="Update Sheet payload"),
+    update_google_sheet_use_case: UpdateGoogleSheetUseCase = Depends(UpdateGoogleSheetUseCase),
 ):
-    gc = gspread.service_account("app/infra/service/annular-form-362316-44f3fc4ff288.json")
-    wks = gc.open(spread_name).worksheet(sheet_name)
-    wks.update([["Tháng", "Tổng số thành viên"]], "E1")
-    return {"Response": "OK"}
+    req_object = UpdateGoogleSheetRequestObject.builder(payload=payload)
+    response = update_google_sheet_use_case.execute(request_object=req_object)
+    return response

@@ -31,7 +31,6 @@ router = APIRouter()
 @response_decorator()
 def create_transaction(
     payload: TransactionInCreate = Body(..., title="TransactionInCreate payload"),
-    # files: UploadFile = File(...),
     create_transaction_use_case: CreateTransactionUseCase = Depends(CreateTransactionUseCase),
 ):
     req_object = CreateTransactionRequestObject.builder(payload=payload)
