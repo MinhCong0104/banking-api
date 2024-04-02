@@ -22,6 +22,13 @@ class GoogleSheetInUpdate(BaseEntity):
     data: List[List[Any]]
     cell: str
 
+
+class GoogleSheetInRetrieve(BaseEntity):
+    spread_name: Optional[str] = 'Vì một tương lai vui khỏe 2024'
+    sheet_name: str
+    date: Optional[str] = None
+    range: Optional[str] = None
+
 #
 # class TransactionInUpdate(BaseEntity):
 #     date: Optional[Union[datetime, Date]]
