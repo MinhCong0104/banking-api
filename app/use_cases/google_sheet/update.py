@@ -34,8 +34,8 @@ class UpdateGoogleSheetUseCase(use_case.UseCase):
 
     def process_request(self, req_object: UpdateGoogleSheetRequestObject):
         payload: GoogleSheetInUpdate = req_object.payload
-
+        #
         wks = gc.open(payload.spread_name).worksheet(payload.sheet_name)
-        res = wks.update([[True]], payload.cell)
-
+        col = wks.findall(payload.name)[0].col
+        res = wks.update_cell(1, col, 'test')
         return res
