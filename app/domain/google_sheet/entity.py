@@ -19,6 +19,13 @@ from app.domain.shared.enum import Type
 class GoogleSheetInUpdate(BaseEntity):
     spread_name: Optional[str] = 'Vì một tương lai vui khỏe 2024'
     sheet_name: str
+    name: str
+    amount: float
+
+
+class GoogleSheetInUpdateOld(BaseEntity):
+    spread_name: Optional[str] = 'Vì một tương lai vui khỏe 2024'
+    sheet_name: str
     data: List[List[Any]]
     cell: str
 

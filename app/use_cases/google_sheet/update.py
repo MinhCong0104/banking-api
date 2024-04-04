@@ -3,6 +3,15 @@ from app.shared import request_object, use_case
 from app.domain.google_sheet.entity import GoogleSheetInUpdate
 from app.infra.service.google_service import gc
 
+
+fake_data = {
+    'date': '28/03/2024',
+    'name': 'Công',
+    'sheet_name': 'Sân không cố định',
+    'amount': 100000,
+}
+
+
 class UpdateGoogleSheetRequestObject(request_object.ValidRequestObject):
     def __init__(self, payload: GoogleSheetInUpdate) -> None:
         self.payload = payload
@@ -27,6 +36,6 @@ class UpdateGoogleSheetUseCase(use_case.UseCase):
         payload: GoogleSheetInUpdate = req_object.payload
 
         wks = gc.open(payload.spread_name).worksheet(payload.sheet_name)
-        res = wks.update(payload.data, payload.cell)
+        res = wks.update([[True]], payload.cell)
 
         return res

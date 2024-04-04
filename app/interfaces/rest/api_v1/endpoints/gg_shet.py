@@ -7,7 +7,7 @@ from typing import Annotated, Union, Dict, List
 from app.shared.decorator import response_decorator
 from app.config import settings
 from app.infra.service.google_service import gc
-from app.domain.google_sheet.entity import GoogleSheetInUpdate, GoogleSheetInRetrieve
+from app.domain.google_sheet.entity import GoogleSheetInUpdateOld, GoogleSheetInRetrieve, GoogleSheetInUpdate
 from app.use_cases.google_sheet.update import UpdateGoogleSheetRequestObject, UpdateGoogleSheetUseCase
 from app.use_cases.google_sheet.get import GetGoogleSheetRequestObject, GetGoogleSheetUseCase
 
@@ -40,6 +40,7 @@ def get_data(
 @router.put("")
 @response_decorator()
 def write_data(
+    # payload: GoogleSheetInUpdateOld = Body(..., title="Update Sheet payload"),
     payload: GoogleSheetInUpdate = Body(..., title="Update Sheet payload"),
     update_google_sheet_use_case: UpdateGoogleSheetUseCase = Depends(UpdateGoogleSheetUseCase),
 ):
