@@ -18,6 +18,7 @@ from app.domain.shared.enum import Type
 
 class GoogleSheetInUpdate(BaseEntity):
     spread_name: Optional[str] = 'Vì một tương lai vui khỏe 2024'
+    date: str
     sheet_name: str
     name: str
     amount: float

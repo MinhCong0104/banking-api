@@ -5,10 +5,10 @@ from app.infra.service.google_service import gc
 
 
 fake_data = {
-    'date': '28/03/2024',
-    'name': 'Công',
-    'sheet_name': 'Sân không cố định',
-    'amount': 100000,
+    "date": "28/03/2024",
+    "name": "Công",
+    "sheet_name": "Sân không cố định",
+    "amount": 100000,
 }
 
 
@@ -34,8 +34,8 @@ class UpdateGoogleSheetUseCase(use_case.UseCase):
 
     def process_request(self, req_object: UpdateGoogleSheetRequestObject):
         payload: GoogleSheetInUpdate = req_object.payload
-        #
         wks = gc.open(payload.spread_name).worksheet(payload.sheet_name)
         col = wks.findall(payload.name)[0].col
-        res = wks.update_cell(1, col, 'test')
+        row = wks.findall(payload.date)[0].row
+        res = wks.update_cell(row, col, True)
         return res
