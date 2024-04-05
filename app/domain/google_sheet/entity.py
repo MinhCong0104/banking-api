@@ -24,13 +24,6 @@ class GoogleSheetInUpdate(BaseEntity):
     amount: float
 
 
-class GoogleSheetInUpdateOld(BaseEntity):
-    spread_name: Optional[str] = 'Vì một tương lai vui khỏe 2024'
-    sheet_name: str
-    data: List[List[Any]]
-    cell: str
-
-
 class GoogleSheetInRetrieve(BaseEntity):
     spread_name: Optional[str] = 'Vì một tương lai vui khỏe 2024'
     sheet_name: str

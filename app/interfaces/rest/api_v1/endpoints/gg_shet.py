@@ -40,7 +40,6 @@ def get_data(
 @router.put("")
 @response_decorator()
 def write_data(
-    # payload: GoogleSheetInUpdateOld = Body(..., title="Update Sheet payload"),
     payload: GoogleSheetInUpdate = Body(..., title="Update Sheet payload"),
     update_google_sheet_use_case: UpdateGoogleSheetUseCase = Depends(UpdateGoogleSheetUseCase),
 ):
