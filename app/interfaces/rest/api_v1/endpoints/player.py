@@ -7,9 +7,8 @@ from typing import Annotated, Union, Dict, List
 from app.shared.decorator import response_decorator
 from app.config import settings
 from app.infra.service.google_service import gc
-from app.domain.google_sheet.entity import GoogleSheetInUpdateOld, GoogleSheetInRetrieve, GoogleSheetInUpdate
-from app.use_cases.google_sheet.update import UpdateGoogleSheetRequestObject, UpdateGoogleSheetUseCase
-from app.use_cases.google_sheet.get import GetGoogleSheetRequestObject, GetGoogleSheetUseCase
+from app.domain.player.entity import PlayerBase, PlayerInUpdateCredit
+from app.use_cases.player.create import GetGoogleSheetRequestObject, GetGoogleSheetUseCase
 
 
 router = APIRouter()
@@ -32,10 +31,21 @@ router = APIRouter()
 #     return response
 
 
+@router.post("")
+@response_decorator()
+def create_player(
+    payload: PlayerBase = Body(..., title="Update Sheet payload"),
+    create_player_use_case: UpdatePlayerUseCase = Depends(UpdatePlayerUseCase),
+):
+    req_object = UpdatePlayerRequestObject.builder(payload=payload)
+    response = update_player_use_case.execute(request_object=req_object)
+    return response
+
+
 @router.put("")
 @response_decorator()
 def update_credit(
-    payload: PlayerInUpdate = Body(..., title="Update Sheet payload"),
+    payload: PlayerInUpdateCredit = Body(..., title="Update Sheet payload"),
     update_player_use_case: UpdatePlayerUseCase = Depends(UpdatePlayerUseCase),
 ):
     req_object = UpdatePlayerRequestObject.builder(payload=payload)

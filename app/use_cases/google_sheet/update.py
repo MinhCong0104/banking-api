@@ -1,5 +1,6 @@
 from typing import Optional
 from app.shared import request_object, use_case
+from app.domain.shared.enum import GoogleSheetColor
 from app.domain.google_sheet.entity import GoogleSheetInUpdate
 from app.infra.service.google_service import gc
 
@@ -35,7 +36,9 @@ class UpdateGoogleSheetUseCase(use_case.UseCase):
     def process_request(self, req_object: UpdateGoogleSheetRequestObject):
         payload: GoogleSheetInUpdate = req_object.payload
         wks = gc.open(payload.spread_name).worksheet(payload.sheet_name)
-        col = wks.findall(payload.name)[0].col
-        row = wks.findall(payload.date)[0].row
-        res = wks.update_cell(row, col, True)
+        col = wks.findall(payload.name)[0].col if wks.findall(payload.name) else False
+        row = wks.findall(payload.date)[0].row if wks.findall(payload.date) else False
+        if not (col and row):
+            return {"Error": "Can not find date or name"}
+        res = wks.format(wks.cell(row, col).address, {"backgroundColor": GoogleSheetColor.YELLOW})
         return res

@@ -19,10 +19,3 @@ class PlayerInDB(IDModelMixin, DateTimeModelMixin, PlayerBase):
 class PlayerInUpdateCredit(BaseEntity):
     name: str
     amount: float
-
-
-class PlayerInCreate(BaseEntity):
-    spread_name: Optional[str] = 'Vì một tương lai vui khỏe 2024'
-    sheet_name: str
-    date: Optional[str] = None
-    range: Optional[str] = None

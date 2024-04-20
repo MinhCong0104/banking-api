@@ -7,7 +7,7 @@ from typing import Annotated, Union, Dict, List
 from app.shared.decorator import response_decorator
 from app.config import settings
 from app.infra.service.google_service import gc
-from app.domain.google_sheet.entity import GoogleSheetInUpdateOld, GoogleSheetInRetrieve, GoogleSheetInUpdate
+from app.domain.google_sheet.entity import GoogleSheetInRetrieve, GoogleSheetInUpdate
 from app.use_cases.google_sheet.update import UpdateGoogleSheetRequestObject, UpdateGoogleSheetUseCase
 from app.use_cases.google_sheet.get import GetGoogleSheetRequestObject, GetGoogleSheetUseCase
 

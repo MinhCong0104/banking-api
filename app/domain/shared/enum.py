@@ -33,3 +33,8 @@ class Period(str, ExtendedEnum):
 class AuthGrantType(str, ExtendedEnum):
     RESET_PASSWORD = "reset_password"
     ACCESS_TOKEN = "access_token"
+
+
+class GoogleSheetColor(dict, ExtendedEnum):
+    RED = {"red": 1.0, "green": 0.0, "blue": 0.0}
+    YELLOW = {"red": 1.0, "green": 1.0, "blue": 0.0}
