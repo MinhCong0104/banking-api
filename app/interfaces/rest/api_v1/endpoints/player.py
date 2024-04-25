@@ -35,10 +35,10 @@ router = APIRouter()
 @response_decorator()
 def create_player(
     payload: PlayerBase = Body(..., title="Update Sheet payload"),
-    create_player_use_case: UpdatePlayerUseCase = Depends(UpdatePlayerUseCase),
+    create_player_use_case: CreatePlayerUseCase = Depends(CreatePlayerUseCase),
 ):
-    req_object = UpdatePlayerRequestObject.builder(payload=payload)
-    response = update_player_use_case.execute(request_object=req_object)
+    req_object = CreatePlayerRequestObject.builder(payload=payload)
+    response = create_player_use_case.execute(request_object=req_object)
     return response
 
 

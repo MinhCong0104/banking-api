@@ -26,6 +26,12 @@ Chỉ cần đóng 80k -> Thêm 20k vào quỹ
 """
 
 
+fake_data = {
+    'name': 'Công',
+    'amount': 50000,
+}
+
+
 @router.get("")
 @response_decorator()
 def get_data(
@@ -45,4 +51,4 @@ def write_data(
 ):
     req_object = UpdateGoogleSheetRequestObject.builder(payload=payload)
     response = update_google_sheet_use_case.execute(request_object=req_object)
-    return response
+    return requests.put("/players", json=fake_data)
