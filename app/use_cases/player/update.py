@@ -5,6 +5,7 @@ from app.shared import request_object, use_case
 from app.domain.player.entity import PlayerBase, PlayerInDB, Player, PlayerInUpdateCredit
 from app.infra.player.player_repository import PlayerRepository
 
+
 class UpdatePlayerRequestObject(request_object.ValidRequestObject):
     def __init__(self, player_in: PlayerInUpdateCredit) -> None:
         self.player_in = player_in
