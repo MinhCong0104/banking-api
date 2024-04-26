@@ -3,7 +3,7 @@ from fastapi import Depends, File, UploadFile
 from app.shared import request_object, use_case
 
 from app.domain.player.entity import PlayerBase, PlayerInDB, Player
-from app.infra.transaction.transaction_repository import TransactionRepository
+from app.infra.player.player_repository import PlayerRepository
 
 
 class CreatePlayerRequestObject(request_object.ValidRequestObject):

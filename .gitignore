@@ -97,3 +97,4 @@ static/
 celerybeat-schedule.db
 .vscode/
 .*.env
+/app/infra/service/annular-form-362316-44f3fc4ff288.json

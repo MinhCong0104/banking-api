@@ -19,3 +19,11 @@ class PlayerInDB(IDModelMixin, DateTimeModelMixin, PlayerBase):
 class PlayerInUpdateCredit(BaseEntity):
     name: str
     amount: float
+
+
+class Player(PlayerBase):
+    """
+    Player domain entity
+    """
+
+    id: str

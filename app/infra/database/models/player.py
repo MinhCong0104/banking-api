@@ -2,7 +2,7 @@ import datetime
 from mongoengine import Document, StringField, DateTimeField, ImageField, FloatField
 
 
-class Transaction(Document):
+class Player(Document):
     name = StringField(required=True)
     gender = StringField(required=True)
     credit = FloatField(required=True)
@@ -14,7 +14,7 @@ class Transaction(Document):
         if not self.created_at:
             self.created_at = datetime.datetime.utcnow()
         self.updated_at = datetime.datetime.utcnow()
-        return super(Transaction, self).save(*args, **kwargs)
+        return super(Player, self).save(*args, **kwargs)
 
     @classmethod
     def from_mongo(cls, data: dict, id_str=False):

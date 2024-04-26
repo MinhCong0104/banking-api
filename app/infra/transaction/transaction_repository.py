@@ -1,4 +1,4 @@
-"""Category repository module"""
+"""Transaction repository module"""
 from typing import Optional, Dict, Union, List, Any
 from mongoengine import QuerySet, DoesNotExist
 from bson import ObjectId
@@ -35,8 +35,8 @@ class TransactionRepository:
         # retrieve unique result
         # https://mongoengine-odm.readthedocs.io/guide/querying.html#retrieving-unique-results
         try:
-            category: TransactionModel = qs.get()
-            return category
+            transaction: TransactionModel = qs.get()
+            return transaction
         except DoesNotExist:
             return None
 
@@ -65,63 +65,5 @@ class TransactionRepository:
         try:
             docs = TransactionModel._get_collection().find(conditions)
             return [TransactionModel.from_mongo(doc) for doc in docs] if docs else []
-        except Exception:
-            return []
-
-    def list(
-        self,
-        type: Type,
-        user: ObjectId,
-        category: ObjectId,
-        date_from: Optional[str] = None,
-        date_to: Optional[str] = None,
-        note: Optional[str] = None,
-        sort: Optional[Dict[str, int]] = None,
-    ) -> List[TransactionModel]:
-        try:
-            match_pipelines = {"user": user}
-
-            if category:
-                match_pipelines = {
-                    **match_pipelines,
-                    "category": category
-                }
-
-            if type:
-                match_pipelines = {
-                    **match_pipelines,
-                    "type": type.value
-                }
-
-            if category:
-                match_pipelines = {
-                    **match_pipelines,
-                    "category": category
-                }
-
-            if note:
-                note = note.lower()
-                match_pipelines = {
-                    **match_pipelines,
-                    "note": {"$regex": ".*" + note + ".*"},
-                }
-
-            if date_from and date_to:
-                match_pipelines = {
-                    **match_pipelines,
-                    "timestamp": {
-                        "$gte": date2datetime(date_from),
-                        "$lte": date2datetime(date_to, min_time=False),
-                    },
-                }
-
-            pipeline = [
-                {"$match": match_pipelines},
-                sort if sort else {"$sort": {"_id": -1}},
-            ]
-
-            docs = TransactionModel.objects().aggregate(pipeline)
-            return [TransactionModel.from_mongo(doc) for doc in docs]
-
         except Exception:
             return []
