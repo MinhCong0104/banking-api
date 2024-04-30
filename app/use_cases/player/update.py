@@ -1,8 +1,8 @@
 from typing import Optional
-from fastapi import Depends, File, UploadFile
+from fastapi import Depends
 from app.shared import request_object, use_case
 
-from app.domain.player.entity import PlayerBase, PlayerInDB, Player, PlayerInUpdateCredit
+from app.domain.player.entity import PlayerInDB, Player, PlayerInUpdateCredit
 from app.infra.player.player_repository import PlayerRepository
 
 
@@ -22,15 +22,16 @@ class UpdatePlayerRequestObject(request_object.ValidRequestObject):
         return UpdatePlayerRequestObject(player_in=payload)
 
 
-class UpdatePlayerUseCase(use_case.UseCase):
+class UpdatePlayerCreditUseCase(use_case.UseCase):
     def __init__(self, player_repository: PlayerRepository = Depends(PlayerRepository)):
         self.player_repository = player_repository
 
     def process_request(self, req_object: UpdatePlayerRequestObject):
         player_in: PlayerInUpdateCredit = req_object.player_in
 
-        player_in_db = self.player_repository.get_by_name(name=player_in.name)
-        player_in_db.credit += player_in.amount
-        player_in_db.save()
+        player: PlayerInDB = self.player_repository.get_by_name(name=player_in.name)
+        player.credit += player_in.amount
+        self.player_repository.update(id=player.id, data=dict(credit=player.credit))
+        player.reload()
 
-        return Player(**player_in_db.model_dump())
+        return Player(**PlayerInDB.model_validate(player).model_dump())

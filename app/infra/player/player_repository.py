@@ -40,7 +40,7 @@ class PlayerRepository:
         except DoesNotExist:
             return None
 
-    def get_by_name(self, name: Union[str]) -> Optional[PlayerModel]:
+    def get_by_name(self, name: Union[str]) -> PlayerInDB:
         """
         Get category in db from id
         :param name:
@@ -55,13 +55,13 @@ class PlayerRepository:
         except DoesNotExist:
             return None
 
-    # def update(self, id: ObjectId, data: Union[TransactionInUpdate, Dict[str, Any]]) -> bool:
-    #     try:
-    #         data = data.model_dump(exclude_none=True) if isinstance(data, TransactionInUpdate) else data
-    #         PlayerModel.objects(id=id).update_one(**data, upsert=False)
-    #         return True
-    #     except Exception:
-    #         return False
+    def update(self, id: ObjectId, data: Union[PlayerInUpdateCredit, Dict[str, Any]]) -> bool:
+        try:
+            data = data.model_dump(exclude_none=True) if isinstance(data, PlayerInUpdateCredit) else data
+            PlayerModel.objects(id=id).update_one(**data, upsert=False)
+            return True
+        except Exception:
+            return False
 
     def delete(self, id: ObjectId) -> bool:
         try:

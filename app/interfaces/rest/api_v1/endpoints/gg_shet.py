@@ -51,4 +51,4 @@ def write_data(
 ):
     req_object = UpdateGoogleSheetRequestObject.builder(payload=payload)
     response = update_google_sheet_use_case.execute(request_object=req_object)
-    return requests.put("/players", json=fake_data)
+    return response

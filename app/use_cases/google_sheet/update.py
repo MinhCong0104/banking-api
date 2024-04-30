@@ -1,8 +1,11 @@
 from typing import Optional
+from fastapi import Depends
 from app.shared import request_object, use_case
 from app.domain.shared.enum import GoogleSheetColor
 from app.domain.google_sheet.entity import GoogleSheetInUpdate
 from app.infra.service.google_service import gc
+from app.domain.player.entity import PlayerInDB, Player
+from app.infra.player.player_repository import PlayerRepository
 
 
 fake_data = {
@@ -30,15 +33,24 @@ class UpdateGoogleSheetRequestObject(request_object.ValidRequestObject):
 
 
 class UpdateGoogleSheetUseCase(use_case.UseCase):
-    def __init__(self):
-        pass
+    def __init__(self, player_repository: PlayerRepository = Depends(PlayerRepository)):
+        self.player_repository = player_repository
 
     def process_request(self, req_object: UpdateGoogleSheetRequestObject):
+
         payload: GoogleSheetInUpdate = req_object.payload
         wks = gc.open(payload.spread_name).worksheet(payload.sheet_name)
         col = wks.findall(payload.name)[0].col if wks.findall(payload.name) else False
         row = wks.findall(payload.date)[0].row if wks.findall(payload.date) else False
         if not (col and row):
-            return {"Error": "Can not find date or name"}
+            return {"Error": "Can not find date or name in google sheet"}
         res = wks.format(wks.cell(row, col).address, {"backgroundColor": GoogleSheetColor.YELLOW})
-        return res
+        if not res:
+            return {"Error": "Update google sheet failed"}
+
+        player: PlayerInDB = self.player_repository.get_by_name(name=payload.name)
+        player.credit += payload.amount
+        self.player_repository.update(id=player.id, data=dict(credit=player.credit))
+        player.reload()
+
+        return Player(**PlayerInDB.model_validate(player).model_dump())

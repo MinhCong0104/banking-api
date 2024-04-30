@@ -8,7 +8,8 @@ from app.shared.decorator import response_decorator
 from app.config import settings
 from app.infra.service.google_service import gc
 from app.domain.player.entity import PlayerBase, PlayerInUpdateCredit
-from app.use_cases.player.create import GetGoogleSheetRequestObject, GetGoogleSheetUseCase
+from app.use_cases.player.create import CreatePlayerRequestObject, CreatePlayerUseCase
+from app.use_cases.player.update import UpdatePlayerRequestObject, UpdatePlayerCreditUseCase
 
 
 router = APIRouter()
@@ -46,8 +47,8 @@ def create_player(
 @response_decorator()
 def update_credit(
     payload: PlayerInUpdateCredit = Body(..., title="Update Sheet payload"),
-    update_player_use_case: UpdatePlayerUseCase = Depends(UpdatePlayerUseCase),
+    update_player_credit_use_case: UpdatePlayerCreditUseCase = Depends(UpdatePlayerCreditUseCase),
 ):
     req_object = UpdatePlayerRequestObject.builder(payload=payload)
-    response = update_player_use_case.execute(request_object=req_object)
+    response = update_player_credit_use_case.execute(request_object=req_object)
     return response

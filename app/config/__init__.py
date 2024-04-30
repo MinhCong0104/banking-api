@@ -28,6 +28,7 @@ class Settings(BaseSettings):
     # project config
     PROJECT_NAME: str = "BANKING-API"
     API_PORT: Optional[int] = 8000
+    APP_URL: str
 
     BACKEND_CORS_ORIGINS: List[str] = []
 
